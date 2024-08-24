@@ -63,6 +63,4 @@ The app will run on http://127.0.0.1:5008.
     You can find all required Python libraries in the `requirements.txt` file. Install them using:
     
 
-```
-pip install -r requirements.txt
-```
+## Demo
