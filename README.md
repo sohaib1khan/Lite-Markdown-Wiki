@@ -4,6 +4,7 @@
 Lite Markdown Wiki is a simple Flask-based web application that allows users to create, edit, delete, and view markdown articles. It also supports file uploads and provides a fuzzy search to list articles. The app uses the **Toast UI Editor** for a rich markdown editing experience, and offers both dark and light modes for user preference.
 
 ## Project Structure
+
 ├── app.py # The main Flask application script
 ├── articles # Directory where markdown articles are stored
 ├── README.md # This README file
