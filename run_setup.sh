@@ -19,6 +19,7 @@ source venv/bin/activate
 # Install the required libraries (Flask and markdown)
 echo "Installing Flask and markdown..."
 pip install Flask markdown
+pip install -r requirements.txt
 
 # Run the Flask application in the background
 echo "Launching Flask server..."
