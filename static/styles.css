@@ -1,0 +1,178 @@
+/* General styles for the body (both dark and light modes) */
+body {
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition between dark and light modes */
+    font-family: 'Roboto', sans-serif; /* Set a default font for the entire page */
+}
+
+/* Light Mode Styles */
+body.light-mode {
+    background-color: #ffffff; /* Set the background to white */
+    color: #000000; /* Set the text color to black */
+}
+
+/* Style the editor container, sidebar, input fields, and buttons for light mode */
+body.light-mode .editor-container,
+body.light-mode .article-sidebar,
+body.light-mode input[type="text"],
+body.light-mode button {
+    background-color: #f4f4f4; /* Light grey background */
+    color: #333333; /* Dark grey text */
+    border: 1px solid #cccccc; /* Light grey border */
+}
+
+/* CodeMirror editor styling for light mode (this is the text area in the markdown editor) */
+body.light-mode .CodeMirror {
+    background-color: #ffffff; /* White background for the editor */
+    color: #333333 !important; /* Dark grey text */
+}
+
+/* Style the gutter (the area showing line numbers) in the CodeMirror editor for light mode */
+body.light-mode .CodeMirror-gutters {
+    background-color: #f4f4f4; /* Light grey background for the gutter */
+    border-right: 1px solid #cccccc; /* Light grey border on the right */
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #1e1e1e; /* Dark grey background */
+    color: #ffffff; /* White text */
+}
+
+/* Style the editor container, sidebar, input fields, and buttons for dark mode */
+body.dark-mode .editor-container,
+body.dark-mode .article-sidebar,
+body.dark-mode input[type="text"],
+body.dark-mode button {
+    background-color: #333333; /* Darker grey background */
+    color: #ffffff; /* White text */
+    border: 1px solid #444444; /* Darker border */
+}
+
+/* CodeMirror editor styling for dark mode */
+body.dark-mode .CodeMirror {
+    background-color: #2e2e2e; /* Dark background for the editor */
+    color: #ffffff !important; /* Ensure text is white in dark mode */
+}
+
+/* Style the gutter in the CodeMirror editor for dark mode */
+body.dark-mode .CodeMirror-gutters {
+    background-color: #333333; /* Dark grey gutter */
+    border-right: 1px solid #444444; /* Darker border on the right */
+}
+
+/* Ensure headers and links are white in dark mode */
+body.dark-mode h1, body.dark-mode h2, body.dark-mode a {
+    color: #ffffff; /* White text for headings and links */
+}
+
+/* Style the toolbar in the Toast UI editor for dark mode */
+body.dark-mode .toastui-editor-toolbar {
+    background-color: #444444; /* Dark grey toolbar background */
+}
+
+/* Style the buttons in the Toast UI editor toolbar for dark mode */
+body.dark-mode .toastui-editor-toolbar button {
+    background-color: #444444; /* Dark grey background for buttons */
+    color: #ffffff; /* White text */
+}
+
+/* Adjust buttons for smoother transitions between dark and light modes */
+button {
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition on hover */
+}
+
+/* Button styles for light mode */
+body.light-mode button {
+    background-color: #4CAF50; /* Light green button background */
+    color: #ffffff; /* White text */
+}
+
+/* Button styles for dark mode */
+body.dark-mode button {
+    background-color: #006400; /* Dark green button background */
+    color: #ffffff; /* White text */
+}
+
+/* Sidebar article styles */
+.article-sidebar {
+    padding: 20px; /* Add padding around the sidebar */
+    width: 30%; /* Set the sidebar width */
+    overflow-y: auto; /* Enable scrolling if content exceeds the sidebar height */
+}
+
+/* Remove bullet points and padding for the article list */
+.article-sidebar ul {
+    list-style-type: none; /* No bullet points */
+    padding: 0; /* Remove padding */
+}
+
+/* Styling for individual articles in the sidebar */
+.article-sidebar li {
+    padding: 10px; /* Padding inside each list item */
+    margin: 5px 0; /* Space between each list item */
+    border: 1px solid #4CAF50; /* Green border around each article */
+    border-radius: 5px; /* Slightly rounded corners */
+    transition: background-color 0.3s; /* Smooth transition on hover */
+}
+
+/* Styling for articles in light mode */
+body.light-mode .article-sidebar li {
+    background-color: #ffffff; /* White background */
+    color: #000000; /* Black text */
+}
+
+/* Styling for articles in dark mode */
+body.dark-mode .article-sidebar li {
+    background-color: #444444; /* Dark grey background */
+    color: #ffffff; /* White text */
+}
+
+/* Change background and text color when hovering over an article */
+.article-sidebar li:hover {
+    background-color: #4CAF50; /* Green background on hover */
+    color: #ffffff; /* White text on hover */
+}
+
+/* Ensure good contrast for input fields */
+input[type="text"] {
+    background-color: #444444; /* Dark grey background for inputs */
+    color: #ffffff; /* White text */
+    border: 1px solid #555555; /* Darker border */
+}
+
+/* Alignment and padding for the editor container */
+.editor-container {
+    padding: 20px; /* Padding around the editor */
+    width: 100%; /* Full width for the editor container */
+    text-align: center; /* Center-align the editor content */
+}
+
+/* Centering the bottom section */
+.bottom-section {
+    display: flex;
+    justify-content: center; /* Center-align the section horizontally */
+    align-items: center; /* Center-align the section vertically */
+    flex-direction: column;
+    padding: 20px;
+}
+
+/* Ensure the sidebar has proper padding and width */
+.article-sidebar {
+    padding: 20px; /* Padding inside the sidebar */
+    width: 35%; /* Set the sidebar width */
+}
+
+/* Additional styles for centering */
+#searchQuery, #searchButton {
+    margin-bottom: 20px; /* Add some margin below the search box */
+}
+
+#articleList {
+    display: block; /* Display as block to make the list vertical */
+    text-align: left; /* Align the text to the left */
+    margin-top: 20px;
+}
+
+#articleList li {
+    margin-bottom: 10px; /* Add margin between each article */
+}

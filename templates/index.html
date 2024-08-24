@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags for character encoding and responsive design -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lite Markdown Wiki</title> <!-- The title of the webpage, shown in the browser tab -->
+
+    <!-- Link to the custom CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <!-- Link to external CSS for the Toast UI Markdown editor -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    
+    <!-- Script for the Toast UI Markdown editor functionalities -->
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+</head>
+<body class="dark-mode"> <!-- Default the page to dark mode -->
+    <!-- Aurora background and editor container -->
+    <div class="aurora-background">
+        <div class="editor-container">
+            <h1>Lite Markdown Wiki</h1> <!-- Main heading of the webpage -->
+
+            <!-- Switch to toggle between dark and light mode -->
+            <div class="switch-container">
+                <input type="checkbox" id="darkModeToggle" class="toggle-switch">
+                <label for="darkModeToggle">Toggle Dark/Light Mode</label>
+            </div>
+
+            <!-- Markdown editor div where users can write the article -->
+            <div id="editor"></div>
+            <br>
+
+            <!-- Input field for the article title -->
+            <input type="text" id="articleTitle" placeholder="Enter article title" />
+            <!-- Button to save the article -->
+            <button id="saveButton">Save Article</button>
+        </div>
+
+        <!-- Bottom section for search and recent articles, centered -->
+        <div class="bottom-section">
+            <!-- Search box -->
+            <input type="text" id="searchQuery" placeholder="Search articles..." />
+            <button id="searchButton">Search</button>
+
+            <!-- Sidebar for listing recent articles -->
+            <h2>Most Recent Articles</h2>
+            <ul id="articleList"></ul> <!-- Unordered list where recent articles will be displayed -->
+            <button id="loadMoreButton">Load More</button> <!-- Button to load more articles -->
+        </div>
+    </div>
+
+    <!-- Link to the custom JavaScript file -->
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {  // Wait until the page is fully loaded
+            let currentPage = 1;  // Variable to keep track of the current page for pagination
+            const modeToggle = document.getElementById('modeToggle');  // Get the dark/light mode toggle switch
+
+            // Toggle between dark and light mode
+            modeToggle.addEventListener('change', function () {
+                document.body.classList.toggle('light-mode');  // Switch to light mode
+                document.body.classList.toggle('dark-mode');  // Switch back to dark mode
+            });
+
+            // Initialize the Toast UI Markdown editor
+            const editor = new toastui.Editor({
+                el: document.querySelector('#editor'),  // Set the editor's container
+                height: '500px',  // Height of the editor
+                initialEditType: 'markdown',  // Set the initial mode to markdown
+                previewStyle: 'vertical',  // Display the markdown preview vertically
+                hooks: {  // Hook to upload images in the editor
+                    addImageBlobHook: (blob, callback) => {
+                        const formData = new FormData();
+                        formData.append("file", blob);  // Attach the image file as form data
+
+                        // Send the image to the server
+                        fetch("/upload", {
+                            method: "POST",
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.url) {
+                                callback(data.url, 'image');  // Insert the image URL into the editor
+                            } else {
+                                alert("Failed to upload image.");  // Alert if the image upload fails
+                            }
+                        })
+                        .catch(err => {
+                            console.error("Error:", err);  // Log any errors to the console
+                        });
+
+                        return false;
+                    }
+                }
+            });
+
+            // Save article when the "Save Article" button is clicked
+            document.getElementById("saveButton").addEventListener("click", function () {
+                const content = editor.getMarkdown();  // Get the markdown content from the editor
+                const title = document.getElementById("articleTitle").value;  // Get the article title
+
+                if (!title || !content) {  // Check if title and content are both provided
+                    alert("Please provide a title and content for the article.");
+                    return;
+                }
+
+                // Send the title and content to the server for saving
+                fetch("/save-article", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ title: title, content: content })  // Send the data as JSON
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Article saved successfully!");  // Alert on successful save
+                    } else {
+                        alert("Failed to save the article.");  // Alert on failure
+                    }
+                })
+                .catch(err => {
+                    console.error("Error:", err);  // Log any errors to the console
+                });
+            });
+
+            // Function to load articles and display them in the article list
+            function loadArticles() {
+                fetch(`/list-articles?page=${currentPage}`)  // Fetch the articles for the current page
+                    .then(response => response.json())
+                    .then(data => {
+                        data.articles.forEach(article => {  // Loop through each article
+                            const li = document.createElement("li");  // Create a list item for each article
+                            const articleTitle = article.replace('.md', '');  // Remove the .md extension
+                            li.innerHTML = `<a href="/view-article?name=${article}" target="_blank">${articleTitle}</a>`;
+                            articleList.appendChild(li);  // Append the article to the list
+                        });
+
+                        if (!data.has_more) {  // Check if there are more articles to load
+                            loadMoreButton.style.display = "none";  // Hide the "Load More" button if no more articles
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Error:", err);  // Log any errors to the console
+                    });
+            }
+
+            loadArticles();  // Load the initial articles when the page loads
+
+            // Load more articles when the "Load More" button is clicked
+            loadMoreButton.addEventListener("click", function () {
+                currentPage++;  // Increment the page number
+                loadArticles();  // Load the next page of articles
+            });
+        });
+    </script>
+</body>
+</html>
